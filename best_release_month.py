@@ -14,6 +14,16 @@ def _():
 
 app._unparsable_cell(
     r"""
+    What month release data has the best sales worlwide
+    what is north americas best month, japan , and africas
+    compare to japan month release
+    """,
+    name="_"
+)
+
+
+app._unparsable_cell(
+    r"""
     data1 = pl.read_parquet(\"vgchartz-2024.parquet\").with_columns( 
                 pl.col(\"release_date\").dt.year().alias(\"year\"),
                 pl.col(\"release_date\").dt.month().alias(\"month\"),
