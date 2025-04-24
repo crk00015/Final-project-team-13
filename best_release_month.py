@@ -67,6 +67,17 @@ def _(data1, pl):
 
 
 @app.cell
+def _(data1, pl):
+    best_monthna = data1.group_by("month").agg([
+        pl.col("total_sales").sum().round(2).alias("Worldwide_sales")
+    ]).sort("Worldwide_sales",descending=True)
+
+
+    best_monthna
+    return (best_monthna,)
+
+
+@app.cell
 def _(diamonds, px):
     # Scatter plot with adjusted scales
     fig = px.scatter(
