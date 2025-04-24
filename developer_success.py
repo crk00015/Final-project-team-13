@@ -14,20 +14,20 @@ def _():
 
 @app.cell
 def _(pl):
-    D1 = pl.read_csv("vg_data_dictionary.csv")
-    D2 = pl.read_parquet("vgchartz-2024.parquet")
-    return D1, D2
+    Dict = pl.read_csv("vg_data_dictionary.csv")
+    Data = pl.read_parquet("vgchartz-2024.parquet")
+    return Data, Dict
 
 
 @app.cell
-def _(D1):
-    D1
+def _(Dict):
+    Dict
     return
 
 
 @app.cell
-def _(D2):
-    D2
+def _(Data):
+    Data
     return
 
 
