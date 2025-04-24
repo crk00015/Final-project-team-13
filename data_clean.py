@@ -18,17 +18,18 @@ def _(pl):
 
 
 @app.cell
-def _(data2):
-    data2
+def _(data2, pl):
+    CD = data2.with_columns(
+        pl.col("release_date").str.to_date().alias("release_date"),
+        pl.col("last_update").str.to_date().alias("last_update"),
+    )
+    return (CD,)
+
+
+@app.cell
+def _(CD):
+    CD.write_parquet("vgchartz-2024.parquet")
     return
-
-
-app._unparsable_cell(
-    r"""
-    CD = 
-    """,
-    name="_"
-)
 
 
 if __name__ == "__main__":
