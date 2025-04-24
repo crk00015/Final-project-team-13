@@ -43,13 +43,13 @@ def _(data1, pl):
 
 @app.cell
 def _(best_year, px):
-    best_year_chart = px.bar(x = "year",
-                             y ="Worldwide_sales",
-                             title = "Growth of Video Game Industry By Year"
-                            
-                            )
+    best_year_chart = px.bar(
+        best_year,
+        x="year",
+        y="Worldwide_sales",
+        title="Growth of Video Game Industry By Year"
+    )
 
-    best_year
     best_year_chart
     return (best_year_chart,)
 
