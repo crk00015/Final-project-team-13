@@ -19,7 +19,7 @@ app._unparsable_cell(
                 pl.col(\"release_date\").dt.month().alias(\"month\"),
                 pl.col(\"release_date\").dt.day().alias(\"day\"),
     )
-    .with_columns(pl.when(pl.col(\"month\") == 1).then(pl.lit(\"January\"))
+    .with_columns((pl.when(pl.col(\"month\") == 1).then(pl.lit(\"January\"))
                 .when(pl.col(\"month\") == 2).then(pl.lit(\"February\"))
                 .when(pl.col(\"month\") == 3).then(pl.lit(\"March\"))
                 .when(pl.col(\"month\") == 4).then(pl.lit(\"April\"))
@@ -33,7 +33,7 @@ app._unparsable_cell(
                 .when(pl.col(\"month\") == 12).then(pl.lit(\"December\"))
                 .otherwise(pl.lit(\"Invalid month\"))
                 .alias(\"month\")
-    )
+    ))
     data1
     """,
     name="_"
@@ -41,8 +41,53 @@ app._unparsable_cell(
 
 
 @app.cell
-def _():
-    return
+def _(pl):
+    datadict = pl.read_csv("vg_data_dictionary.csv")
+    datadict
+    return (datadict,)
+
+
+@app.cell
+def _(data1, pl):
+    best_year = data1.group_by("month").agg([
+        pl.col("total_sales").sum().round(2).alias("Worldwide_sales")
+    ]).sort("Worldwide_sales",descending=True)
+
+
+    best_year
+    return (best_year,)
+
+
+@app.cell
+def _(diamonds, px):
+    # Scatter plot with adjusted scales
+    fig = px.scatter(
+        diamonds.sample(n=1000), 
+        x="carat", 
+        y="price",
+        color="depth",
+        title="Diamond Price vs Weight with Color Scale",
+        labels={
+            "carat": "Weight (carats)",
+            "price": "Price (USD)",
+            "depth": "Depth Percentage"
+        }
+    )
+
+    # Update color scale
+    fig.update_layout(
+        coloraxis_colorbar=dict(
+            title="Depth %",
+            tickvals=[55, 60, 65, 70],
+            ticktext=["55%", "60%", "65%", "70%"]
+        )
+    )
+
+    # Log scale for price
+    fig.update_yaxes(type="log")
+
+    fig.show()
+    return (fig,)
 
 
 if __name__ == "__main__":
