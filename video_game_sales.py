@@ -14,7 +14,7 @@ def _():
 
 @app.cell
 def _(pl):
-    data = pl.read_csv("vgchartz-2024.csv")
+    data = pl.read_parquet("vgchartz-2024.parquet")
     return (data,)
 
 
@@ -30,7 +30,6 @@ def _(data, pl, px):
     most_sold_chart = px.bar(shorten,x= "title", y="Worldwide_sales", title = "Worldwide Sales of the Top 15 Game Titles")
     most_sold
     most_sold_chart
-
     return most_sold, most_sold_chart, shorten
 
 
