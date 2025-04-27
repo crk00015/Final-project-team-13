@@ -12,40 +12,20 @@ def _():
     return mo, pl, px
 
 
-app._unparsable_cell(
-    r"""
-    What video game month release has the best sales worlwide
-    what is north americas best month, japan , and africas
-    compare to japan month release.
-    """,
-    name="_"
-)
-
-
 @app.cell
 def _(pl):
     data1 = pl.read_parquet("vgchartz-2024.parquet").with_columns( 
             pl.col("release_date").dt.year().alias("year"),
             pl.col("release_date").dt.month().alias("month"),
-            pl.col("release_date").dt.day().alias("day"),
-        ).with_columns(
-            pl.when(pl.col("month") == 1).then(pl.lit("January"))
-            .when(pl.col("month") == 2).then(pl.lit("February"))
-            .when(pl.col("month") == 3).then(pl.lit("March"))
-            .when(pl.col("month") == 4).then(pl.lit("April"))
-            .when(pl.col("month") == 5).then(pl.lit("May"))
-            .when(pl.col("month") == 6).then(pl.lit("June"))
-            .when(pl.col("month") == 7).then(pl.lit("July"))
-            .when(pl.col("month") == 8).then(pl.lit("August"))
-            .when(pl.col("month") == 9).then(pl.lit("September"))
-            .when(pl.col("month") == 10).then(pl.lit("October"))
-            .when(pl.col("month") == 11).then(pl.lit("November"))
-            .when(pl.col("month") == 12).then(pl.lit("December"))
-            .otherwise(pl.lit("Invalid month"))
-            .alias("month_name")
-        )
+            pl.col("release_date").dt.day().alias("day"))
+
     data1
     return (data1,)
+
+
+@app.cell
+def _():
+    return
 
 
 @app.cell
@@ -59,8 +39,25 @@ def _(pl):
 def _(data1, pl):
     best_monthww = data1.group_by("month").agg([
         pl.col("total_sales").sum().round(2).alias("Worldwide_sales")
-    ]).sort("Worldwide_sales",descending=True)
+    ]).sort("Worldwide_sales",descending=True).with_columns(
+    
+            pl.when(pl.col("month") == 1).then(pl.lit("January"))
+            .when(pl.col("month") == 2).then(pl.lit("February"))
+            .when(pl.col("month") == 3).then(pl.lit("March"))
+            .when(pl.col("month") == 4).then(pl.lit("April"))
+            .when(pl.col("month") == 5).then(pl.lit("May"))
+            .when(pl.col("month") == 6).then(pl.lit("June"))
+            .when(pl.col("month") == 7).then(pl.lit("July"))
+            .when(pl.col("month") == 8).then(pl.lit("August"))
+            .when(pl.col("month") == 9).then(pl.lit("September"))
+            .when(pl.col("month") == 10).then(pl.lit("October"))
+            .when(pl.col("month") == 11).then(pl.lit("November"))
+            .when(pl.col("month") == 12).then(pl.lit("December"))
+            .otherwise(pl.lit("Invalid month"))
+            .alias("month_name"))
 
+    
+       
 
     best_monthww
     return (best_monthww,)
@@ -68,10 +65,35 @@ def _(data1, pl):
 
 @app.cell
 def _(data1, pl):
+    region = data1.group_by("month").agg(
+        pl.col("total_sales").sum().alias("Worldwide"),
+        pl.col("na_sales").sum().alias("North_America_sales"),
+        pl.col("jp_sales").sum().alias("Japan_sales"),
+        pl.col("pal_sales").sum().alias("Europe/Africa_sales"),
+        pl.col("other_sales").sum().alias("Rest_of_World_sales"))
+    return (region,)
+
+
+@app.cell
+def _(data1, pl):
     best_monthna = data1.group_by("month").agg([
         pl.col("na_sales").sum().round(2).alias("North_American_sales")
-    ]).sort("North_American_sales",descending=True)
-
+    ]).sort("North_American_sales",descending=True).with_columns(
+    
+            pl.when(pl.col("month") == 1).then(pl.lit("January"))
+            .when(pl.col("month") == 2).then(pl.lit("February"))
+            .when(pl.col("month") == 3).then(pl.lit("March"))
+            .when(pl.col("month") == 4).then(pl.lit("April"))
+            .when(pl.col("month") == 5).then(pl.lit("May"))
+            .when(pl.col("month") == 6).then(pl.lit("June"))
+            .when(pl.col("month") == 7).then(pl.lit("July"))
+            .when(pl.col("month") == 8).then(pl.lit("August"))
+            .when(pl.col("month") == 9).then(pl.lit("September"))
+            .when(pl.col("month") == 10).then(pl.lit("October"))
+            .when(pl.col("month") == 11).then(pl.lit("November"))
+            .when(pl.col("month") == 12).then(pl.lit("December"))
+            .otherwise(pl.lit("Invalid month"))
+            .alias("month_name"))
 
     best_monthna
     return (best_monthna,)
@@ -81,8 +103,23 @@ def _(data1, pl):
 def _(data1, pl):
     best_monthjp = data1.group_by("month").agg([
         pl.col("jp_sales").sum().round(2).alias("Japanese_sales")
-    ]).sort("Japanese_sales",descending=True)
+    ]).sort("Japanese_sales",descending=True).with_columns(
 
+    
+            pl.when(pl.col("month") == 1).then(pl.lit("January"))
+            .when(pl.col("month") == 2).then(pl.lit("February"))
+            .when(pl.col("month") == 3).then(pl.lit("March"))
+            .when(pl.col("month") == 4).then(pl.lit("April"))
+            .when(pl.col("month") == 5).then(pl.lit("May"))
+            .when(pl.col("month") == 6).then(pl.lit("June"))
+            .when(pl.col("month") == 7).then(pl.lit("July"))
+            .when(pl.col("month") == 8).then(pl.lit("August"))
+            .when(pl.col("month") == 9).then(pl.lit("September"))
+            .when(pl.col("month") == 10).then(pl.lit("October"))
+            .when(pl.col("month") == 11).then(pl.lit("November"))
+            .when(pl.col("month") == 12).then(pl.lit("December"))
+            .otherwise(pl.lit("Invalid month"))
+            .alias("month_name"))
 
     best_monthjp
     return (best_monthjp,)
@@ -91,8 +128,24 @@ def _(data1, pl):
 @app.cell
 def _(data1, pl):
     best_monthpal = data1.group_by("month").agg([
-        pl.col("pal_sales").sum().round(2).alias("Europe_and_Africa_sales")
-    ]).sort("Europe_and_Africa_sales",descending=True)
+        pl.col("pal_sales").sum().round(2).alias("Europe/Africa_sales")
+    ]).sort("Europe/Africa_sales",descending=True).with_columns(
+
+    
+            pl.when(pl.col("month") == 1).then(pl.lit("January"))
+            .when(pl.col("month") == 2).then(pl.lit("February"))
+            .when(pl.col("month") == 3).then(pl.lit("March"))
+            .when(pl.col("month") == 4).then(pl.lit("April"))
+            .when(pl.col("month") == 5).then(pl.lit("May"))
+            .when(pl.col("month") == 6).then(pl.lit("June"))
+            .when(pl.col("month") == 7).then(pl.lit("July"))
+            .when(pl.col("month") == 8).then(pl.lit("August"))
+            .when(pl.col("month") == 9).then(pl.lit("September"))
+            .when(pl.col("month") == 10).then(pl.lit("October"))
+            .when(pl.col("month") == 11).then(pl.lit("November"))
+            .when(pl.col("month") == 12).then(pl.lit("December"))
+            .otherwise(pl.lit("Invalid month"))
+            .alias("month_name"))
 
 
     best_monthpal
@@ -103,7 +156,23 @@ def _(data1, pl):
 def _(data1, pl):
     best_month_other = data1.group_by("month").agg([
         pl.col("other_sales").sum().round(2).alias("Rest_of_World_sales")
-    ]).sort("Rest_of_World_sales",descending=True)
+    ]).sort("Rest_of_World_sales",descending=True).with_columns(
+
+    
+            pl.when(pl.col("month") == 1).then(pl.lit("January"))
+            .when(pl.col("month") == 2).then(pl.lit("February"))
+            .when(pl.col("month") == 3).then(pl.lit("March"))
+            .when(pl.col("month") == 4).then(pl.lit("April"))
+            .when(pl.col("month") == 5).then(pl.lit("May"))
+            .when(pl.col("month") == 6).then(pl.lit("June"))
+            .when(pl.col("month") == 7).then(pl.lit("July"))
+            .when(pl.col("month") == 8).then(pl.lit("August"))
+            .when(pl.col("month") == 9).then(pl.lit("September"))
+            .when(pl.col("month") == 10).then(pl.lit("October"))
+            .when(pl.col("month") == 11).then(pl.lit("November"))
+            .when(pl.col("month") == 12).then(pl.lit("December"))
+            .otherwise(pl.lit("Invalid month"))
+            .alias("month_name"))
 
 
     best_month_other
@@ -111,35 +180,16 @@ def _(data1, pl):
 
 
 @app.cell
-def _(diamonds, px):
-    # Scatter plot with adjusted scales
-    fig = px.scatter(
-        diamonds.sample(n=1000), 
-        x="carat", 
-        y="price",
-        color="depth",
-        title="Diamond Price vs Weight with Color Scale",
-        labels={
-            "carat": "Weight (carats)",
-            "price": "Price (USD)",
-            "depth": "Depth Percentage"
-        }
+def _(best_monthww, px):
+    fig2 = px.bar(
+        best_monthww,
+        x="month", 
+        y="Worldwide_sales",
+        facet_col= "japenese_sales",
+        category_orders ={"region": ["North_America_sales", "Japanese_sales", "Europe/Africa_sales", "Rest_of_World_sales"]}
     )
-
-    # Update color scale
-    fig.update_layout(
-        coloraxis_colorbar=dict(
-            title="Depth %",
-            tickvals=[55, 60, 65, 70],
-            ticktext=["55%", "60%", "65%", "70%"]
-        )
-    )
-
-    # Log scale for price
-    fig.update_yaxes(type="log")
-
-    fig.show()
-    return (fig,)
+    fig2
+    return (fig2,)
 
 
 if __name__ == "__main__":
