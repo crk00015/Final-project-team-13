@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.10.17"
+__generated_with = "0.11.18"
 app = marimo.App(width="medium")
 
 
@@ -69,12 +69,45 @@ def _(data1, pl):
 @app.cell
 def _(data1, pl):
     best_monthna = data1.group_by("month").agg([
-        pl.col("total_sales").sum().round(2).alias("Worldwide_sales")
-    ]).sort("Worldwide_sales",descending=True)
+        pl.col("na_sales").sum().round(2).alias("North_American_sales")
+    ]).sort("North_American_sales",descending=True)
 
 
     best_monthna
     return (best_monthna,)
+
+
+@app.cell
+def _(data1, pl):
+    best_monthjp = data1.group_by("month").agg([
+        pl.col("jp_sales").sum().round(2).alias("Japanese_sales")
+    ]).sort("Japanese_sales",descending=True)
+
+
+    best_monthjp
+    return (best_monthjp,)
+
+
+@app.cell
+def _(data1, pl):
+    best_monthpal = data1.group_by("month").agg([
+        pl.col("pal_sales").sum().round(2).alias("Europe_and_Africa_sales")
+    ]).sort("Europe_and_Africa_sales",descending=True)
+
+
+    best_monthpal
+    return (best_monthpal,)
+
+
+@app.cell
+def _(data1, pl):
+    best_month_other = data1.group_by("month").agg([
+        pl.col("other_sales").sum().round(2).alias("Rest_of_World_sales")
+    ]).sort("Rest_of_World_sales",descending=True)
+
+
+    best_month_other
+    return (best_month_other,)
 
 
 @app.cell
