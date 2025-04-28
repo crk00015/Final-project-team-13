@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.10.17"
+__generated_with = "0.11.18"
 app = marimo.App(width="medium")
 
 
@@ -15,9 +15,9 @@ def _():
 @app.cell
 def _(pl):
     data1 = pl.read_parquet("vgchartz-2024.parquet").with_columns( 
-                pl.col("release_date").dt.year().alias("year"),
-                pl.col("release_date").dt.month().alias("month"),
-                pl.col("release_date").dt.day().alias("day"),
+                pl.col("release_date").dt.year().alias("Year"),
+                pl.col("release_date").dt.month().alias("Month"),
+                pl.col("release_date").dt.day().alias("Day"),
     )
     data1
     return (data1,)
@@ -32,12 +32,23 @@ def _(pl):
 
 @app.cell
 def _(data1, pl):
-    best_year = data1.group_by("year").agg([
-        pl.col("total_sales").sum().round(2).alias("Worldwide_sales")
-    ]).sort("Worldwide_sales",descending=True)
+    cleaned_data = data1.filter(
+            pl.col("total_sales").is_not_null()
+    )
+    return (cleaned_data,)
+
+
+@app.cell
+def _(data1, pl):
+    best_year = data1.group_by("Year").agg([
+        pl.col("total_sales").sum().round(2).alias("Worldwide Sales")
+    ]).sort("Worldwide Sales",descending=True)
+
+
 
 
     best_year
+
     return (best_year,)
 
 
@@ -45,11 +56,12 @@ def _(data1, pl):
 def _(best_year, px):
     best_year_chart = px.bar(
         best_year,
-        x="year",
-        y="Worldwide_sales",
-        title="Growth of Video Game Industry By Year"
+        x="Year",
+        y="Worldwide Sales",
+        title="Growth of Video Game Industry By Year",
+        labels={"Worldwide Sales": "Worldwide Sales (Millions)", "Year": "Year"},
     )
-
+    best_year
     best_year_chart
     return (best_year_chart,)
 
