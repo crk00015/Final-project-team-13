@@ -21,16 +21,15 @@ def _(pl):
 
 @app.cell
 def _(data, pl, px):
-    yes = data.group_by(["console", "genre"]).len()
+    yes = data.group_by(["console", "genre"]).len("number_of_games_per_genres")
 
-    best = yes.sort(["genre","len"],descending=True)
+    best = yes.sort(["genre","number_of_games_per_genres"],descending=True)
 
     Si = best.group_by("genre").first()
-
     Si = Si.with_columns(
         (pl.col("genre")+ ":" + pl.col("console")).alias("genre_and_console")
     )
-    popular_consoles = px.bar(Si, x= "genre_and_console", y= "len")
+    popular_consoles = px.bar(Si, x= "genre_and_console", y= "number_of_games_per_genres", title= "Number of Games Per Genre VS Grouped by Genre and Most Used Console Per Game Genre")
 
     popular_consoles
 
