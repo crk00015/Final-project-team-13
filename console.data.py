@@ -20,16 +20,21 @@ def _(pl):
 
 
 @app.cell
-def _(data, pl):
-    consoles = data.group_by("console").agg([
-        pl.col("genre").alias("genre")
-    ])
+def _(data, pl, px):
+    yes = data.group_by(["console", "genre"]).len()
 
-    do = consoles.with_columns([
-        pl.when(pl.col("console") )
-    ])
-    consoles
-    return consoles, do
+    best = yes.sort(["genre","len"],descending=True)
+
+    Si = best.group_by("genre").first()
+
+    Si = Si.with_columns(
+        (pl.col("genre")+ ":" + pl.col("console")).alias("genre_and_console")
+    )
+    popular_consoles = px.bar(Si, x= "genre_and_console", y= "len")
+
+    popular_consoles
+
+    return Si, best, popular_consoles, yes
 
 
 if __name__ == "__main__":
