@@ -15,7 +15,7 @@ def _():
 @app.cell
 def _(pl):
     data = pl.read_parquet("vgchartz-2024.parquet")
-    data
+
     return (data,)
 
 
