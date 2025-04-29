@@ -28,8 +28,7 @@ def _(data, pl, px):
     shorten = most_sold.head(15)
 
     most_sold_chart = px.bar(shorten,x= "title", y="Worldwide_sales", title = "Worldwide Sales of the Top 15 Game Titles")
-    most_sold
-    most_sold_chart
+    most_sold,most_sold_chart
     return most_sold, most_sold_chart, shorten
 
 
