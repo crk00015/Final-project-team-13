@@ -48,7 +48,6 @@ def _(data1, pl):
 
 
     best_year
-
     return (best_year,)
 
 
@@ -59,7 +58,6 @@ def _(best_year, px):
         x="Year",
         y="Worldwide Sales",
         title="Growth of Video Game Industry By Year",
-        labels={"Worldwide Sales": "Worldwide Sales (Millions)", "Year": "Year"},
     )
     best_year
     best_year_chart
