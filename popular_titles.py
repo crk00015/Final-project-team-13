@@ -20,30 +20,33 @@ def _(pl):
 
 
 @app.cell
-def _(Dict):
-    Dict
-    return
+def _(Data, pl):
+    DF1 = Data.filter(pl.col("na_sales").is_not_null() & 
+                      pl.col("jp_sales").is_not_null() &
+                      pl.col("pal_sales").is_not_null())
+    return (DF1,)
 
 
 @app.cell
-def _(Data):
-    Data
-    return
+def _(DF1, pl):
+    AVE = DF1.select(
+        pl.col("na_sales").mean(),
+        pl.col("jp_sales").mean(),
+        pl.col("pal_sales").mean()
+    )
+    AVE
+    return (AVE,)
 
 
 @app.cell
-def _():
-    return
-
-
-@app.cell
-def _():
-    return
-
-
-@app.cell
-def _():
-    return
+def _(DF1, pl):
+    DF2 = DF1.group_by("title").agg(
+        pl.col("na_sales").cast(pl.Float64).sum().alias("na_sales"),
+        pl.col("jp_sales").cast(pl.Float64).sum().alias("jp_sales"),
+        pl.col("pal_sales").cast(pl.Float64).sum().alias("pal_sales")
+    )
+    DF2
+    return (DF2,)
 
 
 if __name__ == "__main__":
