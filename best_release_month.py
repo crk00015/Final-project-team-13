@@ -240,7 +240,8 @@ def _(best_month_eu_af, pl, px):
         pie_best_month_eu_af, 
         names="month_name",             
         values="Europe/Africa_sales", 
-        title="1973-2024 Europe & Africa Sales by Month"
+        title="1973-2024 Europe & Africa Sales by Month",
+    
     )
 
     fig18
