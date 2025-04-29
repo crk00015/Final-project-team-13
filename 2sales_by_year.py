@@ -27,6 +27,7 @@ def _(pl):
 def _(data1, pl):
     data11 = data1.filter(
         pl.col("total_sales").is_not_null()
+    
     )
     data11
     return (data11,)
@@ -42,7 +43,7 @@ def _(pl):
 @app.cell
 def _(data11, pl):
     best_year = data11.group_by("Year").agg(
-        pl.col("total_sales").sum().round(2).alias("Worldwide Sales")
+        pl.col("total_sales").sum().round(1).alias("Worldwide Sales")
     ).sort("Worldwide Sales",descending=True)
 
 
@@ -54,16 +55,17 @@ def _(data11, pl):
 
 @app.cell
 def _(best_year, px):
-    best_year_chart = px.bar(
+    best_year_bar = px.bar(
         best_year,
         x="Year",
         y="Worldwide Sales",
         title="Growth of Video Game Industry By Year",
+        labels= {"Worldwide Sales": "Worldwide Sales (Millions)" }
     
     )
     best_year
-    best_year_chart
-    return (best_year_chart,)
+    best_year_bar
+    return (best_year_bar,)
 
 
 if __name__ == "__main__":
