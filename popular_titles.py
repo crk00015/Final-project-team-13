@@ -49,5 +49,25 @@ def _(DF1, pl):
     return (DF2,)
 
 
+@app.cell
+def _(DF2, pl):
+    DF3 = DF2.with_columns(
+        (pl.col('na_sales') / pl.col('jp_sales')
+        ).alias('NA to JP'),
+        (pl.col('na_sales') / pl.col('pal_sales')
+        ).alias('NA to PAL'),
+        (pl.col('jp_sales') / pl.col('na_sales')
+        ).alias('JP to NA'),
+        (pl.col('jp_sales') / pl.col('pal_sales')
+        ).alias('JP to PAL'),
+        (pl.col('pal_sales') / pl.col('na_sales')
+        ).alias('PAL to NA'),
+        (pl.col('pal_sales') / pl.col('jp_sales')
+        ).alias('PAL to jp')
+    )
+    DF3
+    return (DF3,)
+
+
 if __name__ == "__main__":
     app.run()
