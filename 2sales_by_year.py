@@ -24,6 +24,15 @@ def _(pl):
 
 
 @app.cell
+def _(data1, pl):
+    data11 = data1.filter(
+        pl.col("total_sales").is_not_null()
+    )
+    data11
+    return (data11,)
+
+
+@app.cell
 def _(pl):
     data2 = pl.read_csv("vg_data_dictionary.csv")
     data2
@@ -31,18 +40,10 @@ def _(pl):
 
 
 @app.cell
-def _(data1, pl):
-    cleaned_data = data1.filter(
-            pl.col("total_sales").is_not_null()
-    )
-    return (cleaned_data,)
-
-
-@app.cell
-def _(data1, pl):
-    best_year = data1.group_by("Year").agg([
+def _(data11, pl):
+    best_year = data11.group_by("Year").agg(
         pl.col("total_sales").sum().round(2).alias("Worldwide Sales")
-    ]).sort("Worldwide Sales",descending=True)
+    ).sort("Worldwide Sales",descending=True)
 
 
 
@@ -58,6 +59,7 @@ def _(best_year, px):
         x="Year",
         y="Worldwide Sales",
         title="Growth of Video Game Industry By Year",
+    
     )
     best_year
     best_year_chart
