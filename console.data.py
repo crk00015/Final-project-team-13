@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.10.16"
+__generated_with = "0.11.18"
 app = marimo.App(width="medium")
 
 
@@ -15,7 +15,6 @@ def _():
 @app.cell
 def _(pl):
     data = pl.read_parquet("vgchartz-2024.parquet")
-
     return (data,)
 
 
@@ -32,7 +31,6 @@ def _(data, pl, px):
     popular_consoles = px.bar(Si, x= "genre_and_console", y= "number_of_games_per_genres", title= "Number of Games Per Genre VS Grouped by Genre and Most Used Console Per Game Genre")
 
     popular_consoles
-
     return Si, best, popular_consoles, yes
 
 

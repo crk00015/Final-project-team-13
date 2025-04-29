@@ -60,9 +60,9 @@ def _(pl):
 
 @app.cell
 def _(data1, pl):
-    best_monthww = data1.group_by("month").agg([
+    best_monthww = data1.group_by("month").agg(
         pl.col("total_sales").sum().round(2).alias("Worldwide_sales")
-    ]).sort("Worldwide_sales",descending=True)
+    ).sort("Worldwide_sales",descending=True)
 
        
     best_monthww
@@ -71,9 +71,9 @@ def _(data1, pl):
 
 @app.cell
 def _(data1, pl):
-    best_monthna = data1.group_by("month").agg([
+    best_monthna = data1.group_by("month").agg(
         pl.col("na_sales").sum().round(2).alias("North_American_sales")
-    ]).sort("North_American_sales",descending=True)
+    ).sort("North_American_sales",descending=True)
 
     best_monthna
     return (best_monthna,)
@@ -81,9 +81,9 @@ def _(data1, pl):
 
 @app.cell
 def _(data1, pl):
-    best_monthjp = data1.group_by("month").agg([
+    best_monthjp = data1.group_by("month").agg(
         pl.col("jp_sales").sum().round(2).alias("Japanese_sales")
-    ]).sort("Japanese_sales",descending=True)
+    ).sort("Japanese_sales",descending=True)
 
     best_monthjp
     return (best_monthjp,)
@@ -91,9 +91,9 @@ def _(data1, pl):
 
 @app.cell
 def _(data1, pl):
-    best_month_eu_af = data1.group_by("month").agg([
+    best_month_eu_af = data1.group_by("month").agg(
         pl.col("pal_sales").sum().round(2).alias("Europe/Africa_sales")
-    ]).sort("Europe/Africa_sales",descending=True)
+    ).sort("Europe/Africa_sales",descending=True)
 
     best_month_eu_af
     return (best_month_eu_af,)
@@ -101,12 +101,26 @@ def _(data1, pl):
 
 @app.cell
 def _(data1, pl):
-    best_month_other = data1.group_by("month").agg([
+    best_month_other = data1.group_by("month").agg(
         pl.col("other_sales").sum().round(2).alias("Rest_of_World_sales")
-    ]).sort("Rest_of_World_sales",descending=True)
+    ).sort("Rest_of_World_sales",descending=True)
 
     best_month_other
     return (best_month_other,)
+
+
+@app.cell
+def _(best_monthww, px):
+    fig1 = px.bar(
+        best_monthww,
+        x="month", 
+        y="Worldwide_sales",
+        title= "1973-2024 Worlwide Sales by Month",
+        labels= {"Worldwide_sales": "Worldwide Sales (Millions)" }
+    )
+    fig1
+
+    return (fig1,)
 
 
 @app.cell
@@ -135,7 +149,7 @@ def _(best_monthww, pl, px):
         title="1973-2024 Worldwide Sales by Month"
     )
 
-    fig15.show()
+    fig15
     return fig15, pie_best_month_ww
 
 
@@ -162,10 +176,11 @@ def _(best_monthjp, pl, px):
         pie_best_month_jp, 
         names="month_name",             
         values="Japanese_sales", 
-        title="1973-2024 Japanese Sales by Month"
+        title="1973-2024 Japanese Sales by Month",
+    
     )
 
-    fig16.show()
+    fig16
     return fig16, pie_best_month_jp
 
 
@@ -193,9 +208,12 @@ def _(best_monthna, pl, px):
         names="month_name",             
         values="North_American_sales", 
         title="1973-2024 North American Sales by Month"
+     
+
+
     )
 
-    fig17.show()
+    fig17
     return fig17, pie_best_month_na
 
 
@@ -222,10 +240,11 @@ def _(best_month_eu_af, pl, px):
         pie_best_month_eu_af, 
         names="month_name",             
         values="Europe/Africa_sales", 
-        title="1973-2024 Europe & Africa Sales by Month"
+        title="1973-2024 Europe & Africa Sales by Month",
+    
     )
 
-    fig18.show()
+    fig18
     return fig18, pie_best_month_eu_af
 
 
@@ -255,7 +274,7 @@ def _(best_month_other, pl, px):
         title="1973-2024 Rest of World Sales by Month"
     )
 
-    fig19.show()
+    fig19
     return fig19, pie_best_month_row
 
 
