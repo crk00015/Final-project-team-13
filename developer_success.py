@@ -20,6 +20,12 @@ def _(pl):
 
 
 @app.cell
+def _(Dict):
+    Dict
+    return
+
+
+@app.cell
 def _(Data):
     Data
     return
