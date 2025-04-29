@@ -110,6 +110,20 @@ def _(data1, pl):
 
 
 @app.cell
+def _(best_monthww, px):
+    fig1 = px.bar(
+        best_monthww,
+        x="month", 
+        y="Worldwide_sales",
+        title= "1973-2024 Worlwide Sales by Month",
+        labels= {"Worldwide_sales": "Worldwide Sales (Millions)" }
+    )
+    fig1
+
+    return (fig1,)
+
+
+@app.cell
 def _(best_monthww, pl, px):
     pie_best_month_ww = best_monthww.with_columns(
         pl.when(pl.col("month") == 1).then(pl.lit("January"))
@@ -162,7 +176,8 @@ def _(best_monthjp, pl, px):
         pie_best_month_jp, 
         names="month_name",             
         values="Japanese_sales", 
-        title="1973-2024 Japanese Sales by Month"
+        title="1973-2024 Japanese Sales by Month",
+    
     )
 
     fig16.show()
@@ -193,6 +208,9 @@ def _(best_monthna, pl, px):
         names="month_name",             
         values="North_American_sales", 
         title="1973-2024 North American Sales by Month"
+     
+
+
     )
 
     fig17.show()
